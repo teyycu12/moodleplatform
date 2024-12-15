@@ -1,0 +1,119 @@
+/* App.css */
+
+/* 全局樣式 */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.moodle-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* 應用程式標題 */
+.app-header {
+  background-color: #34495e;
+  color: #ecf0f1;
+  padding: 15px 20px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 內容包裹區域 */
+.content-wrapper {
+  display: flex;
+  flex: 1;
+}
+
+/* 左側邊欄 */
+.sidebar {
+  width: 250px;
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+/* 左側導航連結樣式 */
+.sidebar a {
+  text-decoration: none; /* 去除底線 */
+  color: #c8ccd0; /* 設定連結顏色 */
+  font-weight: bold; /* 加粗文字 */
+  display: block; /* 讓連結區域更大，方便點擊 */
+  padding: 10px 0; /* 內邊距 */
+}
+
+.sidebar a:hover {
+  color: #0056b3; /* 當滑鼠懸停時改變顏色 */
+  background-color: #f1f1f1; /* 懸停時背景顏色 */
+  border-radius: 4px; /* 圓角效果 */
+}
+
+.sidebar ul li:hover {
+  color: #3498db;
+}
+
+/* 主內容區域 */
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #ffffff;
+  overflow-y: auto;
+}
+
+.personal-info {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #eaf2f8;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.personal-info h2 {
+  margin-top: 0;
+}
+
+.course-list {
+  padding: 20px;
+  background-color: #fcf8e3;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.course-list h2 {
+  margin-top: 0;
+}
+
+.course-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.course-list ul li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.course-list ul li:last-child {
+  border-bottom: none;
+}
