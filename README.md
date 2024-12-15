@@ -1,70 +1,162 @@
-# Getting Started with Create React App
+# assert-plus
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This library is a super small wrapper over node's assert module that has two
+things: (1) the ability to disable assertions with the environment variable
+NODE\_NDEBUG, and (2) some API wrappers for argument testing.  Like
+`assert.string(myArg, 'myArg')`.  As a simple example, most of my code looks
+like this:
 
-## Available Scripts
+```javascript
+    var assert = require('assert-plus');
 
-In the project directory, you can run:
+    function fooAccount(options, callback) {
+        assert.object(options, 'options');
+        assert.number(options.id, 'options.id');
+        assert.bool(options.isManager, 'options.isManager');
+        assert.string(options.name, 'options.name');
+        assert.arrayOfString(options.email, 'options.email');
+        assert.func(callback, 'callback');
 
-### `npm start`
+        // Do stuff
+        callback(null, {});
+    }
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# API
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+All methods that *aren't* part of node's core assert API are simply assumed to
+take an argument, and then a string 'name' that's not a message; `AssertionError`
+will be thrown if the assertion fails with a message like:
 
-### `npm test`
+    AssertionError: foo (string) is required
+    at test (/home/mark/work/foo/foo.js:3:9)
+    at Object.<anonymous> (/home/mark/work/foo/foo.js:15:1)
+    at Module._compile (module.js:446:26)
+    at Object..js (module.js:464:10)
+    at Module.load (module.js:353:31)
+    at Function._load (module.js:311:12)
+    at Array.0 (module.js:484:10)
+    at EventEmitter._tickCallback (node.js:190:38)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+from:
 
-### `npm run build`
+```javascript
+    function test(foo) {
+        assert.string(foo, 'foo');
+    }
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+There you go.  You can check that arrays are of a homogeneous type with `Arrayof$Type`:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```javascript
+    function test(foo) {
+        assert.arrayOfString(foo, 'foo');
+    }
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+You can assert IFF an argument is not `undefined` (i.e., an optional arg):
 
-### `npm run eject`
+```javascript
+    assert.optionalString(foo, 'foo');
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Lastly, you can opt-out of assertion checking altogether by setting the
+environment variable `NODE_NDEBUG=1`.  This is pseudo-useful if you have
+lots of assertions, and don't want to pay `typeof ()` taxes to v8 in
+production.  Be advised:  The standard functions re-exported from `assert` are
+also disabled in assert-plus if NDEBUG is specified.  Using them directly from
+the `assert` module avoids this behavior.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The complete list of APIs is:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+* assert.array
+* assert.bool
+* assert.buffer
+* assert.func
+* assert.number
+* assert.finite
+* assert.object
+* assert.string
+* assert.stream
+* assert.date
+* assert.regexp
+* assert.uuid
+* assert.arrayOfArray
+* assert.arrayOfBool
+* assert.arrayOfBuffer
+* assert.arrayOfFunc
+* assert.arrayOfNumber
+* assert.arrayOfFinite
+* assert.arrayOfObject
+* assert.arrayOfString
+* assert.arrayOfStream
+* assert.arrayOfDate
+* assert.arrayOfRegexp
+* assert.arrayOfUuid
+* assert.optionalArray
+* assert.optionalBool
+* assert.optionalBuffer
+* assert.optionalFunc
+* assert.optionalNumber
+* assert.optionalFinite
+* assert.optionalObject
+* assert.optionalString
+* assert.optionalStream
+* assert.optionalDate
+* assert.optionalRegexp
+* assert.optionalUuid
+* assert.optionalArrayOfArray
+* assert.optionalArrayOfBool
+* assert.optionalArrayOfBuffer
+* assert.optionalArrayOfFunc
+* assert.optionalArrayOfNumber
+* assert.optionalArrayOfFinite
+* assert.optionalArrayOfObject
+* assert.optionalArrayOfString
+* assert.optionalArrayOfStream
+* assert.optionalArrayOfDate
+* assert.optionalArrayOfRegexp
+* assert.optionalArrayOfUuid
+* assert.AssertionError
+* assert.fail
+* assert.ok
+* assert.equal
+* assert.notEqual
+* assert.deepEqual
+* assert.notDeepEqual
+* assert.strictEqual
+* assert.notStrictEqual
+* assert.throws
+* assert.doesNotThrow
+* assert.ifError
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+# Installation
 
-## Learn More
+    npm install assert-plus
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## License
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The MIT License (MIT)
+Copyright (c) 2012 Mark Cavage
 
-### Code Splitting
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-### Analyzing the Bundle Size
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Bugs
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+See <https://github.com/mcavage/node-assert-plus/issues>.

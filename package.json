@@ -1,37 +1,23 @@
 {
-  "name": "moodle-platform",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "cra-template": "1.2.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-router-dom": "^7.0.2",
-    "react-scripts": "^3.0.1",
-    "web-vitals": "^4.2.4"
+  "author": "Mark Cavage <mcavage@gmail.com>",
+  "name": "assert-plus",
+  "description": "Extra assertions on top of node's assert module",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "./assert.js",
+  "devDependencies": {
+    "tape": "4.2.2",
+    "faucet": "0.0.1"
   },
+  "optionalDependencies": {},
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "./node_modules/.bin/tape tests/*.js | ./node_modules/.bin/faucet"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mcavage/node-assert-plus.git"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "engines": {
+    "node": ">=0.8"
   }
 }
